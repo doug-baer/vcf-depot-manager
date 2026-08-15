@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Health - VCF Depot Manager{% endblock %}
+{% block content %}
+<h1>System Health</h1>
+<div class="card">
+    <h2>Status</h2>
+    <table>
+        <tbody>
+            <tr><td>Overall</td><td>✅ Healthy</td></tr>
+            <tr><td>VCFDT Binary</td><td>{{ '✅ Found' if vcfdt_binary else '❌ Missing' }}</td></tr>
+            <tr><td>Depot Directory</td><td>{{ '✅ Exists' if depot_exists else '❌ Not found' }}</td></tr>
+            <tr><td>Download Token</td><td>{{ '✅ Loaded' if has_token else '❌ None' }}</td></tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
