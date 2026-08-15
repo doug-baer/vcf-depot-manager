@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard - VCF Depot Manager{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="cards">
+    <div class="card">
+        <h3>Depot Status</h3>
+        <p><strong>Exists:</strong> {{ '✅ Yes' if depot.exists else '❌ No' }}</p>
+        <p><strong>Total Size:</strong> {{ "%.1f"|format(depot.total_size / 1073741824) }} GB</p>
+        <p><strong>Files:</strong> {{ depot.file_count }}</p>
+        <p><strong>Components:</strong> {{ depot.components|length }}</p>
+    </div>
+    <div class="card">
+        <h3>Token Status</h3>
+        {% if has_token %}
+            <p>✅ Active token loaded</p>
+        {% else %}
+            <p>❌ No token — <a href="{{ url_for('tokens.manage_token') }}">upload one</a></p>
+        {% endif %}
+    </div>
+    <div class="card">
+        <h3>Active Jobs</h3>
+        <p>{{ jobs|length }} job(s)</p>
+        <a href="{{ url_for('downloads.downloads_page') }}">View jobs →</a>
+    </div>
+</div>
+
+{% if depot.components %}
+<h2>Components in Depot</h2>
+<table>
+    <thead>
+        <tr><th>Component</th><th>Files</th><th>Size</th></tr>
+    </thead>
+    <tbody>
+        {% for comp in depot.components %}
+        <tr>
+            <td>{{ comp.name }}</td>
+            <td>{{ comp.file_count }}</td>
+            <td>{{ "%.1f"|format(comp.size_bytes / 1073741824) }} GB</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

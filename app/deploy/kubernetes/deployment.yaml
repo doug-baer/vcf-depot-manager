@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vcf-depot-manager
+  namespace: vcf-depot
+  labels:
+    app.kubernetes.io/name: vcf-depot-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vcf-depot-manager
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vcf-depot-manager
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      initContainers:
+        # Optional: init container to fetch VCFDT binary if needed
+        - name: init-vcfdt
+          image: busybox:latest
+          command: ['sh', '-c', 'echo "Checking VCFDT binary..." && test -f /opt/vcfdt/vcf-download-tool && echo "Found" || echo "Missing - mount binary"']
+          volumeMounts:
+            - name: vcfdt-bin
+              mountPath: /opt/vcfdt
+      containers:
+        - name: vcf-depot-manager
+          image: vcf-depot-manager:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+              name: http
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: vcf-depot-secrets
+            - configMapRef:
+                name: vcf-depot-config
+          volumeMounts:
+            - name: depot-store
+              mountPath: /data/depot
+            - name: token-store
+              mountPath: /data/tokens
+            - name: log-store
+              mountPath: /data/logs
+            - name: vcfdt-bin
+              mountPath: /opt/vcfdt
+              readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+      volumes:
+        - name: depot-store
+          persistentVolumeClaim:
+            claimName: depot-store
+        - name: token-store
+          persistentVolumeClaim:
+            claimName: token-store
+        - name: log-store
+          persistentVolumeClaim:
+            claimName: log-store
+        - name: vcfdt-bin
+          hostPath:
+            path: /opt/vcfdt
+            type: Directory
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vcf-depot-config
+  namespace: vcf-depot
+data:
+  VCFDT_BIN_PATH: /opt/vcfdt/vcf-download-tool
+  DEPOT_STORE: /data/depot
+  TOKEN_DIR: /data/tokens
+  LOG_DIR: /data/logs
+  VCF_VERSION: "9.1.0"
+  VCF_SKU: "VCF"
+  GUNICORN_WORKERS: "4"
+  GUNICORN_TIMEOUT: "120"

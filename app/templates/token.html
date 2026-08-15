@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Token Management - VCF Depot Manager{% endblock %}
+{% block content %}
+<h1>Download Token Management</h1>
+
+<div class="card">
+    <h2>Current Status</h2>
+    {% if has_token %}
+        <p>✅ An active token is loaded. Any new upload will back up the current token
+           and replace it.</p>
+    {% else %}
+        <p>❌ No active token. Upload your VCF download token file from Broadcom below.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>Upload New Token</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="token_file" accept=".txt,.token" required>
+        <button type="submit">Upload & Activate</button>
+    </form>
+    <p class="hint">The token file is the <code>*.txt</code> file obtained from the Broadcom
+       portal. It will be stored on the persistent volume at <code>/data/tokens/active_token.txt</code>.</p>
+</div>
+{% endblock %}
