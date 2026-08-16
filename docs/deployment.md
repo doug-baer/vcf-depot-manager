@@ -5,31 +5,35 @@
 ### 1. Prepare VCFDT Binary
 
 Download the VCFDT tarball from Broadcom, extract, and place the binary:
-bash mkdir -p bin
+
+`mkdir -p bin`
 
 Extract your downloaded tarball
 
-tar xzf vcf-download-tool-9.1.0.0100.*.tar.gz
+`tar xzf vcf-download-tool-9.1.0.0100.*.tar.gz`
 
 Copy the binary to bin/
 
-cp vcf-download-tool bin/vcf-download-tool chmod +x bin/vcf-download-tool
+`cp vcf-download-tool bin/vcf-download-tool`
+
+`chmod +x bin/vcf-download-tool`
 
 ### 2. Configure
 
-bash cp .env.example .env
+`cp .env.example .env`
+
 Edit .env — especially FLASK_SECRET_KEY, ADMIN_USERNAME, ADMIN_PASSWORD
 
 ### 3. (Optional) Prepare TLS Certificates
 
-bash mkdir -p certs openssl req -x509 -nodes -days 365 -newkey rsa:2048
--keyout certs/server.key
--out certs/server.crt
--subj "/CN=vcf-depot.lab.internal"
+`mkdir -p certs`
+
+`openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout certs/server.key -out certs/server.crt -subj "/CN=vcf-depot.lab.internal"`
 
 ### 4. Launch
 
-bash docker compose up -d docker compose logs -f
+`docker compose up -d` 
+`docker compose logs -f`
 
 ### 5. Access
 
@@ -38,11 +42,12 @@ bash docker compose up -d docker compose logs -f
 - Depot files: `https://localhost/depot/files/`
 
 
-## Kubernetes
+## Kubernetes (future)
 
 ### 1. Build and Push Image
 
-bash docker build -t your-registry/vcf-depot-manager:latest . docker push your-registry/vcf-depot-manager:latest
+`docker build -t your-registry/vcf-depot-manager:latest .` 
+`docker push your-registry/vcf-depot-manager:latest`
 
 ### 2. Update Manifests
 
@@ -52,12 +57,18 @@ bash docker build -t your-registry/vcf-depot-manager:latest . docker push your-r
 
 ### 3. Deploy
 
-bash kubectl apply -f deploy/kubernetes/namespace.yaml kubectl apply -f deploy/kubernetes/pvc.yaml kubectl apply -f deploy/kubernetes/secret.yaml kubectl apply -f deploy/kubernetes/configmap.yaml # (if separated) kubectl apply -f deploy/kubernetes/deployment.yaml kubectl apply -f deploy/kubernetes/service.yaml kubectl apply -f deploy/kubernetes/ingress.yaml
+`kubectl apply -f deploy/kubernetes/namespace.yaml `
+`kubectl apply -f deploy/kubernetes/pvc.yaml`
+`kubectl apply -f deploy/kubernetes/secret.yaml` 
+`kubectl apply -f deploy/kubernetes/configmap.yaml` # (if separated) 
+`kubectl apply -f deploy/kubernetes/deployment.yaml` 
+`kubectl apply -f deploy/kubernetes/service.yaml` 
+`kubectl apply -f deploy/kubernetes/ingress.yaml`
 
 ### 4. Verify
 
-bash kubectl -n vcf-depot get pods kubectl -n vcf-depot port-forward svc/vcf-depot-manager 5000:5000
-
+`kubectl -n vcf-depot get pods` 
+`kubectl -n vcf-depot port-forward svc/vcf-depot-manager 5000:5000`
 
 Open http://localhost:5000
 
@@ -67,4 +78,3 @@ Open http://localhost:5000
 2. Go to **Downloads** and trigger an INSTALL download for VCF 9.1.0
 3. Monitor the job status — downloads can take several hours depending on bandwidth
 4. Once complete, point SDDC Manager to `https://your-host/depot/files/`
-
