@@ -4,6 +4,9 @@ A lightweight web application for managing a VMware Cloud Foundation (VCF) 9.1 o
 Wraps the VCF Download Tool (VCFDT) in a Flask web UI, running inside a Docker container
 with persistent volume mounts for the depot store and token files.
 
+NOTE: in VCF 9.1, "download tokens" have been replaced with Activation Codes
+`--depot-download-activation-code-file` instead of `--depot-download-token-file`
+
 ## Features
 
 - Dashboard with depot size, component inventory, and job status
