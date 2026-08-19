@@ -146,6 +146,7 @@ class VCFDTService:
         """List available binaries. Runs synchronously (fast command)."""
         cmd = [
             self.binary, 'binaries', 'list',
+            f'--ceip=DISABLE',
             f'--vcf-version={vcf_version or self.vcf_version}',
             f'--sku={self.sku}',
             f'--type={download_type}',
