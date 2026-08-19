@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}List Updates - VCF Depot Manager{% endblock %}
+{% block content %}
+<h1>List Available Updates</h1>
+
+<div class="card">
+    <h2>Query Parameters</h2>
+    <form method="POST" action="{{ url_for('list_updates.list_updates') }}">
+        <label>VCF Version:
+            <input type="text" name="vcf_version" value="{{ default_vcf_version }}" required>
+        </label>
+        <label>Type:
+            <select name="download_type">
+                <option value="INSTALL">INSTALL</option>
+                <option value="UPGRADE">UPGRADE</option>
+            </select>
+        </label>
+        <label>Component (optional):
+            <input type="text" name="component" placeholder="e.g., ESX_HOST, VCENTER, NSX_T_MANAGER">
+        </label>
+        <button type="submit">Run List Command</button>
+    </form>
+</div>
+
+{% if result %}
+<div class="card">
+    <h2>Command Output</h2>
+    <div class="code-block">
+        <pre>{{ result.stdout }}</pre>
+    </div>
+    {% if not result.success %}
+    <div class="alert alert-error">
+        <strong>Error:</strong> {{ result.stderr }}
+    </div>
+    {% endif %}
+    <details>
+        <summary>Show Raw Details</summary>
+        <p><strong>Return Code:</strong> {{ result.returncode }}</p>
+        <p><strong>Command:</strong> <code>{{ result.command }}</code></p>
+    </details>
+</div>
+{% endif %}
+{% endblock %}
