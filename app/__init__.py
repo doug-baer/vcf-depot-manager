@@ -19,6 +19,7 @@ def create_app():
     from app.routes.tokens import tokens_bp
     from app.routes.health import health_bp
     from app.routes.configuration import configuration_bp
+    from app.routes.list_updates import list_updates_bp
 
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(depot_bp)
@@ -27,5 +28,6 @@ def create_app():
     app.register_blueprint(tokens_bp)
     app.register_blueprint(health_bp)
     app.register_blueprint(configuration_bp)
+    app.register_blueprint(list_updates_bp)
 
     return app

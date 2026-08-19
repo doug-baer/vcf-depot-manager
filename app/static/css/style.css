@@ -41,3 +41,19 @@ button:hover { background: #5a3de6; }
 .job-status.pending { color: #666; font-weight: bold; }
 .job-status.terminated { color: #721c24; font-weight: bold; }
 .job-status.not_found { color: #666; font-style: italic; }
+
+/* Code block styling for Listing */
+.code-block {
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1rem;
+    overflow-x: auto;
+    max-height: 500px;
+    overflow-y: auto;
+}
+.code-block pre {
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+}
