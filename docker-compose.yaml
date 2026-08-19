@@ -15,8 +15,8 @@ services:
       - token_data:/data/tokens
       # Job logs and gunicorn logs
       - log_data:/data/logs
-      # Full VCFDT directory with all binaries, configs, etc.
-      - ./bin/vcfdt:/opt/vcfdt:ro
+      # Full VCFDT directory with all binaries, configs, etc. (needs RW so that it can update configs)
+      - ./bin/vcfdt:/opt/vcfdt
     networks:
       - depot-net
     healthcheck:

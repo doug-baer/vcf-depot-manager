@@ -146,6 +146,7 @@ class VCFDTService:
         """List available binaries. Runs synchronously (fast command)."""
         cmd = [
             self.binary, 'binaries', 'list',
+            f'--depot-download-activation-code-file={self.active_token_file}',
             f'--ceip=DISABLE',
             f'--vcf-version={vcf_version or self.vcf_version}',
             f'--sku={self.sku}',
@@ -184,7 +185,7 @@ class VCFDTService:
 
         cmd = [
             self.binary, 'binaries', 'download',
-            f'--depot-download-token-file={self.active_token_file}',
+            f'--depot-download-activation-code-file={self.active_token_file}',
             f'--depot-store={self.depot_store}',
             f'--vcf-version={vcf_version or self.vcf_version}',
             f'--sku={self.sku}',
