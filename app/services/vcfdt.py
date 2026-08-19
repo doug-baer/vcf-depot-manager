@@ -35,38 +35,51 @@ class VCFDTService:
         return os.path.join(self.token_dir, 'software-depot-id.txt')
 
     def generate_depot_id(self):
-        """Run VCFDT to generate a new Software Depot ID."""
+        """Run VCFDT to generate a new Software Depot ID and extract the UUID."""
+        import re
+
         cmd = [self.binary, 'configuration', 'generate', '--software-depot-id']
 
         try:
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
 
-            # The depot ID is typically printed to stdout
-            depot_id = result.stdout.strip()
+            # VCFDT prints a welcome message with a registration link.
+            # Extract the UUID that follows "serviceId="
+            output = result.stdout.strip()
+            match = re.search(r'serviceId=([a-f0-9\-]+)', output, re.IGNORECASE)
 
-            # Remove any leading/trailing whitespace or markdown
-            depot_id = '\n'.join(line for line in depot_id.split('\n') if line.strip())
+            if match:
+                depot_id = match.group(1)
 
-            # Write to persistent storage
-            with open(self.depot_id_file, 'w') as f:
-                f.write(depot_id)
+                # Write the clean UUID to persistent storage
+                with open(self.depot_id_file, 'w') as f:
+                    f.write(depot_id)
 
-            return {
-                'success': result.returncode == 0,
-                'depot_id': depot_id if result.returncode == 0 else None,
-                'stdout': result.stdout,
-                'stderr': result.stderr,
-                'returncode': result.returncode,
-                'saved_to': self.depot_id_file,
-            }
+                return {
+                    'success': True,
+                    'depot_id': depot_id,
+                    'full_output': output,
+                    'stderr': result.stderr.strip(),
+                    'returncode': result.returncode,
+                    'saved_to': self.depot_id_file,
+                }
+            else:
+                # Could not find serviceId in output
+                return {
+                    'success': False,
+                    'depot_id': None,
+                    'full_output': output,
+                    'stderr': result.stderr.strip(),
+                    'returncode': result.returncode,
+                    'error': 'Could not parse serviceId from command output',
+                }
         except Exception as e:
             return {
                 'success': False,
                 'error': str(e),
-                'stdout': '',
+                'full_output': '',
                 'stderr': str(e),
                 'returncode': -1,
-                'saved_to': None,
             }
 
     def get_depot_id(self):

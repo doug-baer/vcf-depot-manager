@@ -14,15 +14,15 @@ def create_app():
     # Register blueprints
     from app.routes.dashboard import dashboard_bp
     from app.routes.depot import depot_bp
-    #from app.routes.downloads import downloads_bp
-    from app.routes.tokens import jobs_bp
+    from app.routes.downloads import downloads_bp
+    from app.routes.jobs import jobs_bp
     from app.routes.tokens import tokens_bp
     from app.routes.health import health_bp
     from app.routes.configuration import configuration_bp
 
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(depot_bp)
-    #app.register_blueprint(downloads_bp)
+    app.register_blueprint(downloads_bp)
     app.register_blueprint(jobs_bp)
     app.register_blueprint(tokens_bp)
     app.register_blueprint(health_bp)

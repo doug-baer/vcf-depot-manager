@@ -4,13 +4,13 @@
 
 ### 1. Prepare VCFDT Binary
 
-Download the VCFDT tarball from Broadcom, extract, and place the binary:
+Download the VCFDT tarball from Broadcom, extract, and place the files into the bin/vcfdt directory in the project location:
 
 `mkdir -p ./bin/vcfdt`
 
 Extract the downloaded tarball into the new directory
 
-`tar xzf vcf-download-tool-9.1.0.0*.tar.gz -C ./bin/vcfdt --strip-components=1`
+`tar xzf vcf-download-tool-9.1.0.0*.tar.gz -C ./bin/vcfdt`
 
 # Verify the structure
 
@@ -28,7 +28,7 @@ bin/vcfdt/
 With this command, 
 `ls -la bin/vcfdt/bin/`
 
-You should see vcf-download-tool executable
+You should see `vcf-download-tool` executable in the resulting list.
 
 
 ### 2. Configure
@@ -43,6 +43,8 @@ NEW_ID=$(cat /proc/sys/kernel/random/uuid)
 sed -i "/^FLASK_SECRET_KEY=/s/.*$/FLASK_SECRET_KEY=$NEW_ID/" .env
 ```
 
+Record the username and password that you selected.
+
 ### 3. Prepare TLS Certificates
 
 `mkdir -p certs`
@@ -53,16 +55,14 @@ sed -i "/^FLASK_SECRET_KEY=/s/.*$/FLASK_SECRET_KEY=$NEW_ID/" .env
 
 `docker compose up -d`
 
-`docker compose logs -f`
-
 ### 5. Access
 
-- Web UI: `https://localhost` (or your host)
+- Web UI: `https://localhost` (or your hostname)
 - Health: `https://localhost/health`
 - Depot files: `https://localhost/depot/files/`
 
 
-## Kubernetes (future)
+## Kubernetes (TODO: future)
 
 ### 1. Build and Push Image
 
@@ -95,7 +95,7 @@ Open http://localhost:5000
 
 ## Post-Deployment
 
-1. Navigate to the **Token** page and upload your Broadcom download token
+1. Navigate to the **Configuration** page, generate a depot ID and upload your Broadcom Activation Code file.
 2. Go to **Downloads** and trigger an INSTALL download for VCF 9.1.0
 3. Monitor the job status — downloads can take several hours depending on bandwidth
-4. Once complete, point SDDC Manager to `https://your-host/depot/files/`
+4. Once complete, point VCF Operations to `https://your-host/depot/files/`
