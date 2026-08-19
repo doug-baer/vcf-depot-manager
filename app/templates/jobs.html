@@ -20,9 +20,7 @@
         <tr data-job-id="{{ job_id }}">
             <td><code>{{ job_id }}</code></td>
             <td>{{ job.type }}</td>
-            <td class="job-status" style="color: {% if job.status == 'completed' %}green{% elif job.status == 'failed' %}red{% else %}orange{% endif %};">
-                {{ job.status }}
-            </td>
+            <td class="job-status {{ job.status }}">{{ job.status }}</td>
             <td>{{ job.started_at }}</td>
             <td title="{{ job.command }}"><small>{{ job.command[:80] }}...</small></td>
             <td>
@@ -37,20 +35,21 @@
 {% endif %}
 
 <script>
-// Auto-refresh job status every 10 seconds for running jobs
 setInterval(function() {
     document.querySelectorAll('tr[data-job-id]').forEach(function(row) {
-        const jobId = row.dataset.jobId;
-        fetch(`/jobs/api/status/${jobId}`)
-            .then(r => r.json())
-            .then(data => {
-                const statusCell = row.querySelector('.job-status');
-                if (statusCell && data.status !== 'running' && data.status !== 'starting') {
+        var jobId = row.dataset.jobId;
+        fetch('/jobs/api/status/' + jobId)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                var statusCell = row.querySelector('.job-status');
+                if (statusCell) {
                     statusCell.textContent = data.status;
-                    statusCell.style.color = data.status === 'completed' ? 'green' : 'red';
+                    statusCell.className = 'job-status ' + data.status;
                 }
             })
-            .catch(() => {});
+            .catch(function() {});
     });
 }, 10000);
 </script>
