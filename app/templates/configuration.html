@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Configuration - VCF Depot Manager{% endblock %}
+{% block content %}
+<h1>Depot Configuration</h1>
+
+<div class="cards">
+    <!-- Depot ID Card -->
+    <div class="card">
+        <h3>Software Depot ID</h3>
+        {% if depot_id %}
+            <p><strong>Status:</strong> ✅ Generated</p>
+            <p><strong>ID:</strong> <code>{{ depot_id }}</code></p>
+            <p class="hint">Copy this ID to the <a href="https://customerconnect.vmware.com" target="_blank">Broadcom VCF Business Console</a> → Software Depot Registration to obtain your activation code.</p>
+        {% else %}
+            <p><strong>Status:</strong> ❌ Not generated</p>
+            <form method="POST" action="{{ url_for('configuration.generate_depot_id') }}">
+                <button type="submit">Generate Depot ID</button>
+            </form>
+        {% endif %}
+    </div>
+
+    <!-- Activation Code Card -->
+    <div class="card">
+        <h3>Broadcom Activation Code</h3>
+        {% if has_activation %}
+            <p><strong>Status:</strong> ✅ Activated</p>
+            <p class="hint">Activation code is configured. You can now download binaries.</p>
+        {% else %}
+            <p><strong>Status:</strong> ❌ Missing</p>
+            <p class="hint">After registering your depot ID with Broadcom, upload the activation code here.</p>
+            <form method="POST" action="{{ url_for('configuration.save_activation_code') }}" enctype="multipart/form-data">
+                <input type="file" name="activation_code" accept=".txt">
+                <button type="submit">Upload Activation Code</button>
+            </form>
+            <hr style="margin: 1rem 0;">
+            <p><small>Or paste as text:</small></p>
+            <form method="POST" action="{{ url_for('configuration.save_activation_code') }}">
+                <textarea name="activation_code" rows="4" cols="50" placeholder="Paste activation code here"></textarea>
+                <br>
+                <button type="submit">Save Activation Code</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -8,7 +8,7 @@ health_bp = Blueprint('health', __name__)
 def health():
     data = {
         'status': 'healthy',
-        'vcfdt_binary': os.path.isfile(os.environ.get('VCFDT_BIN_PATH', '/opt/vcfdt/vcf-download-tool')),
+        'vcfdt_binary': os.path.isfile(os.environ.get('VCFDT_BIN_PATH', '/opt/vcfdt/bin/vcf-download-tool')),
         'depot_exists': os.path.isdir(os.environ.get('DEPOT_STORE', '/data/depot')),
         'has_token': vcfdt_service.has_active_token(),
     }

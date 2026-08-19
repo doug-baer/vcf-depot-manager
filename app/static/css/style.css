@@ -32,3 +32,12 @@ button {
 }
 button:hover { background: #5a3de6; }
 .hint { font-size: 0.85rem; color: #666; margin-top: 0.5rem; }
+
+/* Job status colors */
+.job-status.completed { color: #155724; font-weight: bold; }
+.job-status.failed { color: #721c24; font-weight: bold; }
+.job-status.running { color: #6d4aff; font-weight: bold; }
+.job-status.starting { color: #6d4aff; font-weight: bold; }
+.job-status.pending { color: #666; font-weight: bold; }
+.job-status.terminated { color: #721c24; font-weight: bold; }
+.job-status.not_found { color: #666; font-style: italic; }

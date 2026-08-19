@@ -15,9 +15,9 @@ services:
       - token_data:/data/tokens
       # Job logs and gunicorn logs
       - log_data:/data/logs
-      # Mount VCFDT binary (downloaded separately from Broadcom)
-      # Place the extracted vcf-download-tool binary here on the host
-      - ./bin/vcf-download-tool:/opt/vcfdt/vcf-download-tool:ro
+      # Mount VCFDT directory into /opt/vcfdt (downloaded separately from Broadcom)
+      # Place the extracted vcf-download-tool tarball here on the host
+      - ./bin/vcfdt/:/opt/vcfdt:ro
     networks:
       - depot-net
     healthcheck:
