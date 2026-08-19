@@ -9,7 +9,8 @@
             <tr><td>Overall</td><td>✅ Healthy</td></tr>
             <tr><td>VCFDT Binary</td><td>{{ '✅ Found' if vcfdt_binary else '❌ Missing' }}</td></tr>
             <tr><td>Depot Directory</td><td>{{ '✅ Exists' if depot_exists else '❌ Not found' }}</td></tr>
-            <tr><td>Download Token</td><td>{{ '✅ Loaded' if has_token else '❌ None' }}</td></tr>
+            <tr><td>Software Depot ID</td><td>{{ '✅ Generated' if has_depot_id else '❌ Not generated' }}</td></tr>
+            <tr><td>Activation Code</td><td>{{ '✅ Loaded' if has_activation_code else '❌ Missing' }}</td></tr>
         </tbody>
     </table>
 </div>
