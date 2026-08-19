@@ -1,22 +1,16 @@
 # Deployment Guide
 
-## Docker Compose (Local/Lab)
+## Docker Compose (Local/Lab/Testing)
 
 ### 1. Prepare VCFDT Binary
 
 Download the VCFDT tarball from Broadcom, extract, and place the binary:
 
-`mkdir -p bin`
+`mkdir -p ./bin/vcfdt`
 
-Extract your downloaded tarball
+Extract the downloaded tarball into the new directory
 
-`tar xzf vcf-download-tool-9.1.0.0100.*.tar.gz`
-
-Copy the binary to bin/
-
-`cp vcf-download-tool bin/vcf-download-tool`
-
-`chmod +x bin/vcf-download-tool`
+`tar xzf vcf-download-tool-9.1.0.*.tar.gz -D ./bin/vcfdt`
 
 ### 2. Configure
 
@@ -24,7 +18,13 @@ Copy the binary to bin/
 
 Edit .env — especially FLASK_SECRET_KEY, ADMIN_USERNAME, ADMIN_PASSWORD
 
-### 3. (Optional) Prepare TLS Certificates
+For example, can create a new, random secret key with
+```
+NEW_ID=$(cat /proc/sys/kernel/random/uuid)
+sed -i "/^FLASK_SECRET_KEY=/s/.*$/FLASK_SECRET_KEY=$NEW_ID/" .env
+```
+
+### 3. Prepare TLS Certificates
 
 `mkdir -p certs`
 
@@ -32,7 +32,8 @@ Edit .env — especially FLASK_SECRET_KEY, ADMIN_USERNAME, ADMIN_PASSWORD
 
 ### 4. Launch
 
-`docker compose up -d` 
+`docker compose up -d`
+
 `docker compose logs -f`
 
 ### 5. Access
@@ -47,6 +48,7 @@ Edit .env — especially FLASK_SECRET_KEY, ADMIN_USERNAME, ADMIN_PASSWORD
 ### 1. Build and Push Image
 
 `docker build -t your-registry/vcf-depot-manager:latest .` 
+
 `docker push your-registry/vcf-depot-manager:latest`
 
 ### 2. Update Manifests

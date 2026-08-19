@@ -23,9 +23,9 @@ binary, providing a browser-based interface for managing an offline VCF 9.1 depo
 │  └─────────────────────────────────────────────┘    │
 │                       │                             │
 │  Volumes (persistent, outside container):           │
-│  ┌────────────┐ ┌─────────────┐ ┌────────────┐      │
-│  │ /data/depot│ │ /data/tokens│ │ /data/logs │      │
-│  └─────┬──────┘ └─────────────┘ └────────────┘      │
+│  ┌─────────────┐ ┌──────────────┐ ┌────────────┐    │
+│  │ /data/depot │ │ /data/tokens │ │ /data/logs │    │
+│  └─────┬───────┘ └──────────────┘ └────────────┘    │
 │        │                                            │
 │  Binary mount:                                      │
 │  ┌───────────────────────┐                          │

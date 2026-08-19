@@ -10,7 +10,7 @@ class VCFDTService:
     """Wraps the VCF Download Tool (VCFDT) binary for subprocess execution."""
 
     def __init__(self):
-        self.binary = os.environ.get('VCFDT_BIN_PATH', '/opt/vcfdt/vcf-download-tool')
+        self.binary = os.environ.get('VCFDT_BIN_PATH', '/opt/vcfdt/bin/vcf-download-tool')
         self.depot_store = os.environ.get('DEPOT_STORE', '/data/depot')
         self.token_dir = os.environ.get('TOKEN_DIR', '/data/tokens')
         self.log_dir = os.environ.get('LOG_DIR', '/data/logs')
@@ -31,6 +31,7 @@ class VCFDTService:
         """List available binaries from Broadcom depot."""
         cmd = [
             self.binary, 'binaries', 'list',
+            f'--depot-download-activation-code-file={self.active_token_file}',
             f'--vcf-version={vcf_version or self.vcf_version}',
             f'--sku={self.sku}',
             f'--type={download_type}',
@@ -51,7 +52,7 @@ class VCFDTService:
 
         cmd = [
             self.binary, 'binaries', 'download',
-            f'--depot-download-token-file={self.active_token_file}',
+            f'--depot-download-activation-code-file={self.active_token_file}',
             f'--depot-store={self.depot_store}',
             f'--vcf-version={vcf_version or self.vcf_version}',
             f'--sku={self.sku}',
