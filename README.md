@@ -20,16 +20,17 @@ NOTE: in VCF 9.1, "download tokens" have been replaced with Activation Codes
 
 ## Quick Start
 
-git clone... 
+`git clone...` 
 
 ## Configure
 
-cp .env.example .env
+`cp .env.example .env`
+
 Edit .env with your settings
 
 ## Launch
 
-docker compose up -d
+`docker compose up -d`
 
 Open `http://localhost:5000` (or your configured port).
 
