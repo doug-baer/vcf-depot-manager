@@ -81,7 +81,7 @@ spec:
             claimName: log-store
         - name: vcfdt-bin
           hostPath:
-            path: /opt/vcfdt
+            path: /opt/vcfdt  # Mount the full directory on host
             type: Directory
 ---
 apiVersion: v1
@@ -90,7 +90,7 @@ metadata:
   name: vcf-depot-config
   namespace: vcf-depot
 data:
-  VCFDT_BIN_PATH: /opt/vcfdt/vcf-download-tool
+  VCFDT_BIN_PATH: /opt/vcfdt/bin/vcf-download-tool
   DEPOT_STORE: /data/depot
   TOKEN_DIR: /data/tokens
   LOG_DIR: /data/logs

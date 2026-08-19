@@ -10,7 +10,26 @@ Download the VCFDT tarball from Broadcom, extract, and place the binary:
 
 Extract the downloaded tarball into the new directory
 
-`tar xzf vcf-download-tool-9.1.0.*.tar.gz -D ./bin/vcfdt`
+`tar xzf vcf-download-tool-9.1.0.0*.tar.gz -C ./bin/vcfdt --strip-components=1`
+
+# Verify the structure
+
+Make sure that your ./bin/vcfdt directory looks like this
+```
+bin/vcfdt/
+├── bin/
+│   └── vcf-download-tool    <- executable
+├── conf/
+│   └── esxUserConfig.json   <- ESX configuration
+├── vmware-umds-distrib/     <- UMDS installer files
+└── ... other VCFDT files ...
+```
+
+With this command, 
+`ls -la bin/vcfdt/bin/`
+
+You should see vcf-download-tool executable
+
 
 ### 2. Configure
 
