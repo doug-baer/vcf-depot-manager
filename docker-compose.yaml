@@ -9,14 +9,14 @@ services:
     env_file:
       - .env
     volumes:
-      # Persistent depot store - survives container rebuilds
-      - depot_data:/data/depot
+      # Persistent depot store - survives container rebuilds (read-write is default, but we will be explicit)
+      - /data/depot:/data/depot:rw
       # Token files (rotated via web UI)
       - token_data:/data/tokens
       # Job logs and gunicorn logs
       - log_data:/data/logs
       # Full VCFDT directory with all binaries, configs, etc. (needs RW so that it can update configs)
-      - ./bin/vcfdt:/opt/vcfdt
+      - ./bin/vcfdt:/opt/vcfdt:rw
     networks:
       - depot-net
     healthcheck:
@@ -44,8 +44,6 @@ services:
       - depot-net
 
 volumes:
-  depot_data:
-    driver: local
   token_data:
     driver: local
   log_data:
