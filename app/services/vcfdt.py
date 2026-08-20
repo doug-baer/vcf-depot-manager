@@ -191,6 +191,9 @@ class VCFDTService:
             f'--sku={self.sku}',
             f'--type={download_type}',
         ]
+
+        if download_type == "INSTALL":
+            cmd.append(f'--automated-install') #get the automated install packages for full offline depot capability
         if component:
             cmd.append(f'--component={component}')
         if patches_only:
